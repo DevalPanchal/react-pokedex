@@ -9,6 +9,8 @@ export function PokemonInfo(props) {
      const [finalEvoPic, setFinalEvoPic] = useState("");
      const [mainPic, setMainPic] = useState("");
 
+     const [isLoading, setIsLoading] = useState(false);
+
      useEffect(() => {
           switch (props.type) {
                case "grass":
@@ -33,7 +35,8 @@ export function PokemonInfo(props) {
 
      useEffect(() => {
           async function getEvolution() {
-               try {                    
+               try {         
+                    setIsLoading(true);           
                     // remainder
                     let id = props.id % 3;
                     if (id % 3 !== 0) {
@@ -52,7 +55,10 @@ export function PokemonInfo(props) {
                     localStorage.setItem("evolution_data", JSON.stringify(data));
                     setMainSpecie(data.chain.species.name);
                     setPokemonEvolution(data.chain.evolves_to[0].species.name);
-                    setPokemonFinalEvolution(data.chain.evolves_to[0].evolves_to[0].species.name);                    
+                    setPokemonFinalEvolution(data.chain.evolves_to[0].evolves_to[0].species.name);  
+                    setTimeout(() => {
+                         setIsLoading(false);
+                    }, 1500);                  
                } catch (error) {
                     console.error(error)
                }
@@ -95,6 +101,12 @@ export function PokemonInfo(props) {
                poke();
           }
      }, [pokemonEvolution, pokemonFinalEvolution, mainSpecie]);
+
+     if (isLoading) {
+          return (
+               <div className="loading"></div>
+          )
+     }
 
      return (
           <div className="info-wrapper" >

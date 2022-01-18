@@ -46,7 +46,74 @@ body, html {
     background-color: #96D9D6;
 }
 
+.loading {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border: 5px solid #dc1955;
+  border-right-color: transparent;
+  position: relative;
+  animation-name: spinner;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.loading::after,
+.loading::before {
+  content: "";
+  background-color: transparent;
+  position: absolute;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  z-index: -1;
+}
+.loading::after {
+  width: 54px;
+  height: 54px;
+  border: 5px solid #1490e3;
+  border-left-color: transparent;
+  left: -12px;
+  top: -12px;
+}
+.loading::before {
+  width: 68px;
+  height: 68px;
+  border: 5px solid #fca800;
+  border-bottom-color: transparent;
+  left: -19px;
+  top: -19px;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(1turn);
+    -webkit-transform: rotate(1turn);
+    -moz-transform: rotate(1turn);
+    -ms-transform: rotate(1turn);
+    -o-transform: rotate(1turn);
+  }
+}
+.loading:hover {
+  animation-play-state: paused;
+}
+
+.loading-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -273,10 +340,10 @@ body, html {
                         width: 300px;
                         transition: 0.3s;
                         border-radius: 25px;
-                        &:hover {
-                            transform: perspective(1000px) rotateX(25deg);
-                            box-shadow: 0 15px 20px #000;
-                        }
+                        // &:hover {
+                        //     transform: perspective(1000px) rotateX(25deg);
+                        //     box-shadow: 0 15px 20px #000;
+                        // }
                     }
                     .name {
                         width: 50%;
