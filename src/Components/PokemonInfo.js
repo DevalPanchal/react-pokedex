@@ -32,39 +32,32 @@ export function PokemonInfo(props) {
      }, [pokemonType, props.type]);
 
      useEffect(() => {
-          if (localStorage.evolution_data) {
-               const data = JSON.parse(localStorage.evolution_data);
-               setMainSpecie(data.chain.species.name);
-               setPokemonEvolution(data.chain.evolves_to[0].species.name);
-               setPokemonFinalEvolution(data.chain.evolves_to[0].evolves_to[0].species.name);     
-          } else {
-               async function getEvolution() {
-                    try {                    
-                         // remainder
-                         let id = props.id % 3;
-                         if (id % 3 !== 0) {
-                              id = Math.ceil(props.id/3);
-                         } else {
-                              id = props.id / 3;
-                         }
-                         const response = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${(id)}/`, {
-                              method: "GET",
-                              headers: {
-                                   "Content-Type": "application/json"
-                              }
-                         });
-                         const data = await response.json();
-                         // set a localstorage cache
-                         localStorage.setItem("evolution_data", JSON.stringify(data));
-                         setMainSpecie(data.chain.species.name);
-                         setPokemonEvolution(data.chain.evolves_to[0].species.name);
-                         setPokemonFinalEvolution(data.chain.evolves_to[0].evolves_to[0].species.name);                    
-                    } catch (error) {
-                         console.error(error)
+          async function getEvolution() {
+               try {                    
+                    // remainder
+                    let id = props.id % 3;
+                    if (id % 3 !== 0) {
+                         id = Math.ceil(props.id/3);
+                    } else {
+                         id = props.id / 3;
                     }
+                    const response = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${(id)}/`, {
+                         method: "GET",
+                         headers: {
+                              "Content-Type": "application/json"
+                         }
+                    });
+                    const data = await response.json();
+                    // set a localstorage cache
+                    localStorage.setItem("evolution_data", JSON.stringify(data));
+                    setMainSpecie(data.chain.species.name);
+                    setPokemonEvolution(data.chain.evolves_to[0].species.name);
+                    setPokemonFinalEvolution(data.chain.evolves_to[0].evolves_to[0].species.name);                    
+               } catch (error) {
+                    console.error(error)
                }
-               getEvolution(); 
           }
+          getEvolution(); 
      }, [props.id]);
 
      useEffect(() => {
